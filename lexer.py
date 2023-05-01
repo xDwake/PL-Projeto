@@ -38,15 +38,15 @@ def t_WORD(t):
     return t
 
 def t_HEXNUM(t):
-    r"0x\w+"
+    r"0x\d+"
     return t
 
 def t_BINNUM(t):
-    r"0b\w+"
+    r"0b\d+"
     return t
 
 def t_OCTNUM(t):
-    r"0o\w+"
+    r"0o\d+"
     return t
 
 def t_INTNUM(t):

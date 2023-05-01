@@ -2,10 +2,10 @@
 
 ## 2.6 Conversor toml-json
 
-    Ver detalhes em: https://github.com/toml-lang/toml
-    A linguagem toml permite uma fácil definição de estruturas complexas (dicionários generalizados) frequentmente usados em
-    ficheiros de configuração e em vários outros domínios de modo análogo ao JSON e ao YAML
-    Considere o sequinte exemplo:
+Ver detalhes em: <https://github.com/toml-lang/toml>
+A linguagem toml permite uma fácil definição de estruturas complexas (dicionários generalizados) frequentmente usados em
+ficheiros de configuração e em vários outros domínios de modo análogo ao JSON e ao YAML
+Considere o sequinte exemplo:
 
     title = "TOML Example"
 

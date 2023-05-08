@@ -15,7 +15,7 @@ tokens = [
     'TIME',
     'WORD',
     'DOT',
-    'COMMA'
+    'COMMA',
 ]
 
 t_COMMENT = r'\#.*'
@@ -24,6 +24,7 @@ t_PAR_RET_OPEN = r'\['
 t_PAR_RET_CLOSE = r'\]'
 t_DOT = r'\.'
 t_COMMA = r'\,'
+
 
 def t_DATE(t):
     r"\d{4}-\d{2}-\d{2}"

@@ -1,10 +1,21 @@
 import ply.yacc as yacc
 
 from lexer import tokens
+contador = 0
+string = ""
+
+def close_classe():
+    global contador
+    global string
+    string = ""
+    while contador > 0:
+        string += "\t" * contador + '}' + '\n'
+        contador -=1
+    string = string[:-1]
 
 def p_programa(p):
     'programa : title conteudo'
-    p[0] = '{' + '\n' +  p[1] +  '\n' + p[2] + '\n' + '}'
+    p[0] = '{' + '\n' +  p[1] + ',\n' + p[2] +'\n' + '}'
 
 def p_conteudo(p):
     '''conteudo : conteudo classe
@@ -17,15 +28,31 @@ def p_conteudo(p):
     
 
 def p_classe(p):
-    'classe : header linhas'
-    p[0] = p[1] + '{' + '\n' + p[2] + '\n' + '\t' +'}'
+    'classe : headers linhas'
+    global string
+    close_classe()
+    p[0] = p[1]  + '\n' + p[2] + '\n' + string
 
-def p_header(p):
-    '''header : PAR_RET_OPEN WORD PAR_RET_CLOSE'''
-              #| PAR_RET_OPEN WORD DOT WORD PAR_RET_CLOSE'''
-
-    p[0] = '\t' + '"' + p[2] + '"' + ': '
+def p_headers(p):
     
+    '''headers : headers header
+                | header'''
+    global contador
+    if len(p) == 2:
+        p[0] = p[1]
+    else:
+        p[0] = p[1] + '\n' + p[2]
+    contador +=1
+    
+def p_header(p):
+    '''header : PAR_RET_OPEN WORD PAR_RET_CLOSE
+                | PAR_RET_OPEN WORD DOT WORD PAR_RET_CLOSE'''
+
+    if len(p) == 4:
+        p[0] = '\t' + '"' + p[2] + '"' + ': ' + '{'
+    else:
+        p[0] = '\t' + '"' + p[4] + '"' + ': ' + '{'
+
 def p_linhas(p):
     '''linhas : linhas linha
              | linha'''
@@ -74,11 +101,12 @@ dobas = "aufasfha"
 dobassss = "aufasfha"
 
 [database]
+[database.coiso]
 enabled = "true"
 ports = "coiso"
 data = "delta"
-temp_targets = "pefomance"'''
-
-with open("teste.toml",'w') as f: 
+temp_targets = "pefomance"
+'''
+with open("teste.json",'w') as f: 
     f.write(parser.parse(tab_in,debug=True))
     

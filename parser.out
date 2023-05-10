@@ -1,0 +1,67 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    BINNUM
+    COMMA
+    DATE
+    EMPTYLINE
+    HEXNUM
+    INTNUM
+    LITERAL_STRING
+    OCTNUM
+    TIME
+
+Grammar
+
+Rule 0     S' -> programa
+Rule 1     programa -> title conteudo
+Rule 2     conteudo -> conteudo classe
+Rule 3     conteudo -> classe
+Rule 4     headers -> headers header
+Rule 5     headers -> header
+Rule 6     header -> PAR_RET_OPEN WORD PAR_RET_CLOSE
+Rule 7     header -> PAR_RET_OPEN WORD DOT WORD PAR_RET_CLOSE
+Rule 8     linhas -> linhas linha
+Rule 9     linhas -> linha
+Rule 10    title -> linha
+Rule 11    linha -> key EQUALS valor
+Rule 12    linha -> comentario
+Rule 13    comentario -> COMMENT
+Rule 14    key -> WORD
+Rule 15    valor -> BASIC_STRING
+
+Terminals, with rules where they appear
+
+BASIC_STRING         : 15
+BINNUM               : 
+COMMA                : 
+COMMENT              : 13
+DATE                 : 
+DOT                  : 7
+EMPTYLINE            : 
+EQUALS               : 11
+HEXNUM               : 
+INTNUM               : 
+LITERAL_STRING       : 
+OCTNUM               : 
+PAR_RET_CLOSE        : 6 7
+PAR_RET_OPEN         : 6 7
+TIME                 : 
+WORD                 : 6 7 7 14
+error                : 
+
+Nonterminals, with rules where they appear
+
+classe               : 2 3
+comentario           : 12
+conteudo             : 1 2
+header               : 4 5
+headers              : 4
+key                  : 11
+linha                : 8 9 10
+linhas               : 8
+programa             : 0
+title                : 1
+valor                : 11
+

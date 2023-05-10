@@ -1,16 +1,16 @@
 import ply.yacc as yacc
 
 from lexer import tokens
-contador = 0
+num_indents = 0
 string = ""
 
 def close_classe():
-    global contador
+    global num_indents
     global string
     string = ""
-    while contador > 0:
-        string += "\t" * contador + '}' + '\n'
-        contador -=1
+    while num_indents > 0:
+        string += "\t" * num_indents + '}' + '\n'
+        num_indents -=1
     string = string[:-1]
 
 def p_programa(p):
@@ -37,29 +37,30 @@ def p_headers(p):
     
     '''headers : headers header
                 | header'''
-    global contador
+    global num_indents
     if len(p) == 2:
         p[0] = p[1]
     else:
         p[0] = p[1] + '\n' + p[2]
-    contador +=1
+    num_indents +=1
     
 def p_header(p):
     '''header : PAR_RET_OPEN WORD PAR_RET_CLOSE
                 | PAR_RET_OPEN WORD DOT WORD PAR_RET_CLOSE'''
 
     if len(p) == 4:
-        p[0] = '\t' + '"' + p[2] + '"' + ': ' + '{'
+        p[0] = '\t' * (num_indents+1) + '"' + p[2] + '"' + ': ' + '{'
     else:
-        p[0] = '\t' + '"' + p[4] + '"' + ': ' + '{'
+        p[0] = '\t' * (num_indents+1) + '"' + p[4] + '"' + ': ' + '{'
 
 def p_linhas(p):
     '''linhas : linhas linha
              | linha'''
+    global num_indents
     if len(p) == 2:
-        p[0] = '\t' + p[1]
+        p[0] = '\t' * (num_indents) + p[1]
     else:
-        p[0] = p[1] + ',' + '\n' + '\t' + p[2]
+        p[0] = p[1] + ',' + '\n' + '\t'* (num_indents) + p[2]
     
 def p_title(p):
     'title : linha'

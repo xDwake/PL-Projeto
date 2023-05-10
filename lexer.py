@@ -16,6 +16,7 @@ tokens = [
     'WORD',
     'DOT',
     'COMMA',
+    'EMPTYLINE'
 ]
 
 t_COMMENT = r'\#.*'
@@ -24,7 +25,7 @@ t_PAR_RET_OPEN = r'\['
 t_PAR_RET_CLOSE = r'\]'
 t_DOT = r'\.'
 t_COMMA = r'\,'
-
+t_EMPTYLINE = r'^[ \t]*\n$'
 
 def t_DATE(t):
     r"\d{4}-\d{2}-\d{2}"
@@ -60,6 +61,10 @@ def t_FLOATNUM(t):
     t.value = float(t.value)
     return t
 
+def t_EXPONENCIALNUM(t):
+    r"-*\d+[\.\d]*e\d+"
+    return t
+
 def t_BASIC_STRING(t):
     r"\s?\"[\w|\-|\.|\s]+\""
     return t
@@ -79,23 +84,29 @@ lexer = lex.lex()
 
 string = """
 title = "TOML Example"
+
 [owner]
 name = "Tom Preston-Werner"
 date = 2010-04-23
 time = 21:30:00
+
 [database]
 server = "192.168.1.1"
 ports = [ 8001, 8001, 8002 ]
 connection_max = 5000
 enabled = true
+
 [servers]
 [servers.alpha]
 ip = "10.0.0.1"
 dc = "eqdc10"
+
 [servers.beta]
 ip = "10.0.0.2"
 dc = "eqdc10"
+
 # Line breaks are OK when inside arrays
+
 hosts = [
 "alpha",
 "omega"

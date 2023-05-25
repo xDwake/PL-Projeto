@@ -83,13 +83,12 @@ lexer = lex.lex()
 
 
 string = """
-title = "TOML Example"
-
 [owner]
 name = "Tom Preston-Werner"
 date = 2010-04-23
 time = 21:30:00
-
+"""
+"""
 [database]
 server = "192.168.1.1"
 ports = [ 8001, 8001, 8002 ]

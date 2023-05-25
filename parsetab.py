@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'BASIC_STRING BINNUM COMMA COMMENT DATE DOT EMPTYLINE EQUALS HEXNUM INTNUM LITERAL_STRING OCTNUM PAR_RET_CLOSE PAR_RET_OPEN TIME WORDprogram : linha tabletable : table categoria\n             | categoriacategoria : header conteudoheader : PAR_RET_OPEN WORD PAR_RET_CLOSEconteudo : conteudo linha\n                | linhalinha : WORD EQUALS BASIC_STRING '
+_lr_signature = 'BASIC_STRING BINNUM COMMA COMMENT DATE DOT EMPTYLINE EQUALS HEXNUM INTNUM LITERAL_STRING OCTNUM PAR_RET_CLOSE PAR_RET_OPEN TIME WORDprograma : title conteudoconteudo : conteudo classe\n                | classeclasse : headers linhasheaders : headers header\n                | headerheader : PAR_RET_OPEN WORD PAR_RET_CLOSE\n                | PAR_RET_OPEN WORD DOT WORD PAR_RET_CLOSElinhas : linhas linha\n             | linhatitle : linhalinha : key EQUALS valor\n            | comentariocomentario : COMMENTkey : WORDvalor : BASIC_STRING\n            '
     
-_lr_action_items = {'WORD':([0,6,7,10,11,13,14,15,],[3,3,12,3,-7,-8,-6,-5,]),'$end':([1,4,5,9,10,11,13,14,],[0,-1,-3,-2,-4,-7,-8,-6,]),'PAR_RET_OPEN':([2,4,5,9,10,11,13,14,],[7,7,-3,-2,-4,-7,-8,-6,]),'EQUALS':([3,],[8,]),'BASIC_STRING':([8,],[13,]),'PAR_RET_CLOSE':([12,],[15,]),}
+_lr_action_items = {'WORD':([0,5,7,10,11,12,15,16,17,19,20,21,22,23,25,],[6,-13,-14,6,-6,18,6,-5,-10,-12,-16,-9,-7,24,-8,]),'COMMENT':([0,5,7,10,11,15,16,17,19,20,21,22,25,],[7,-13,-14,7,-6,7,-5,-10,-12,-16,-9,-7,-8,]),'$end':([1,5,7,8,9,14,15,17,19,20,21,],[0,-13,-14,-1,-3,-2,-4,-10,-12,-16,-9,]),'PAR_RET_OPEN':([2,3,5,7,8,9,10,11,14,15,16,17,19,20,21,22,25,],[12,-11,-13,-14,12,-3,12,-6,-2,-4,-5,-10,-12,-16,-9,-7,-8,]),'EQUALS':([4,6,],[13,-15,]),'BASIC_STRING':([13,],[20,]),'PAR_RET_CLOSE':([18,24,],[22,25,]),'DOT':([18,],[23,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'program':([0,],[1,]),'linha':([0,6,10,],[2,11,14,]),'table':([2,],[4,]),'categoria':([2,4,],[5,9,]),'header':([2,4,],[6,6,]),'conteudo':([6,],[10,]),}
+_lr_goto_items = {'programa':([0,],[1,]),'title':([0,],[2,]),'linha':([0,10,15,],[3,17,21,]),'key':([0,10,15,],[4,4,4,]),'comentario':([0,10,15,],[5,5,5,]),'conteudo':([2,],[8,]),'classe':([2,8,],[9,14,]),'headers':([2,8,],[10,10,]),'header':([2,8,10,],[11,11,16,]),'linhas':([10,],[15,]),'valor':([13,],[19,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,13 +26,21 @@ for _k, _v in _lr_goto_items.items():
        _lr_goto[_x][_k] = _y
 del _lr_goto_items
 _lr_productions = [
-  ("S' -> program","S'",1,None,None,None),
-  ('program -> linha table','program',2,'p_program','yacc.py',5),
-  ('table -> table categoria','table',2,'p_table','yacc.py',9),
-  ('table -> categoria','table',1,'p_table','yacc.py',10),
-  ('categoria -> header conteudo','categoria',2,'p_categoria','yacc.py',18),
-  ('header -> PAR_RET_OPEN WORD PAR_RET_CLOSE','header',3,'p_header','yacc.py',23),
-  ('conteudo -> conteudo linha','conteudo',2,'p_conteudo','yacc.py',27),
-  ('conteudo -> linha','conteudo',1,'p_conteudo','yacc.py',28),
-  ('linha -> WORD EQUALS BASIC_STRING','linha',3,'p_linha','yacc.py',36),
+  ("S' -> programa","S'",1,None,None,None),
+  ('programa -> title conteudo','programa',2,'p_programa','yacc.py',6),
+  ('conteudo -> conteudo classe','conteudo',2,'p_conteudo','yacc.py',10),
+  ('conteudo -> classe','conteudo',1,'p_conteudo','yacc.py',11),
+  ('classe -> headers linhas','classe',2,'p_classe','yacc.py',20),
+  ('headers -> headers header','headers',2,'p_headers','yacc.py',24),
+  ('headers -> header','headers',1,'p_headers','yacc.py',25),
+  ('header -> PAR_RET_OPEN WORD PAR_RET_CLOSE','header',3,'p_header','yacc.py',33),
+  ('header -> PAR_RET_OPEN WORD DOT WORD PAR_RET_CLOSE','header',5,'p_header','yacc.py',34),
+  ('linhas -> linhas linha','linhas',2,'p_linhas','yacc.py',42),
+  ('linhas -> linha','linhas',1,'p_linhas','yacc.py',43),
+  ('title -> linha','title',1,'p_title','yacc.py',50),
+  ('linha -> key EQUALS valor','linha',3,'p_linha','yacc.py',54),
+  ('linha -> comentario','linha',1,'p_linha','yacc.py',55),
+  ('comentario -> COMMENT','comentario',1,'p_comentario','yacc.py',63),
+  ('key -> WORD','key',1,'p_key','yacc.py',67),
+  ('valor -> BASIC_STRING','valor',1,'p_valor','yacc.py',71),
 ]

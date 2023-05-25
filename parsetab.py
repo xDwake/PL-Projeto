@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'BASIC_STRING BINNUM COMMA COMMENT DATE DOT EMPTYLINE EQUALS HEXNUM INTNUM LITERAL_STRING OCTNUM PAR_RET_CLOSE PAR_RET_OPEN TIME WORDprogram : linha tabletable : table categoria\n             | categoriacategoria : header conteudoheader : PAR_RET_OPEN WORD PAR_RET_CLOSEconteudo : conteudo linha\n                | linhalinha : WORD EQUALS BASIC_STRING '
+_lr_signature = 'BASIC_STRING BINNUM COMMA COMMENT DATE DOT EMPTYLINE EQUALS HEXNUM INTNUM LITERAL_STRING OCTNUM PAR_RET_CLOSE PAR_RET_OPEN TIME WORDprogram : linha tabletable : table categoria\n             | categoriacategoria : header conteudoheader : PAR_RET_OPEN WORD PAR_RET_CLOSEconteudo : conteudo linha\n                | linhalinha : WORD EQUALS value basicstring : BASIC_STRINGvalue : basicstring'
     
-_lr_action_items = {'WORD':([0,6,7,10,11,13,14,15,],[3,3,12,3,-7,-8,-6,-5,]),'$end':([1,4,5,9,10,11,13,14,],[0,-1,-3,-2,-4,-7,-8,-6,]),'PAR_RET_OPEN':([2,4,5,9,10,11,13,14,],[7,7,-3,-2,-4,-7,-8,-6,]),'EQUALS':([3,],[8,]),'BASIC_STRING':([8,],[13,]),'PAR_RET_CLOSE':([12,],[15,]),}
+_lr_action_items = {'WORD':([0,6,7,10,11,13,14,15,16,17,],[3,3,12,3,-7,-8,-10,-9,-6,-5,]),'$end':([1,4,5,9,10,11,13,14,15,16,],[0,-1,-3,-2,-4,-7,-8,-10,-9,-6,]),'PAR_RET_OPEN':([2,4,5,9,10,11,13,14,15,16,],[7,7,-3,-2,-4,-7,-8,-10,-9,-6,]),'EQUALS':([3,],[8,]),'BASIC_STRING':([8,],[15,]),'PAR_RET_CLOSE':([12,],[17,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'program':([0,],[1,]),'linha':([0,6,10,],[2,11,14,]),'table':([2,],[4,]),'categoria':([2,4,],[5,9,]),'header':([2,4,],[6,6,]),'conteudo':([6,],[10,]),}
+_lr_goto_items = {'program':([0,],[1,]),'linha':([0,6,10,],[2,11,16,]),'table':([2,],[4,]),'categoria':([2,4,],[5,9,]),'header':([2,4,],[6,6,]),'conteudo':([6,],[10,]),'value':([8,],[13,]),'basicstring':([8,],[14,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -28,11 +28,13 @@ del _lr_goto_items
 _lr_productions = [
   ("S' -> program","S'",1,None,None,None),
   ('program -> linha table','program',2,'p_program','yacc.py',5),
-  ('table -> table categoria','table',2,'p_table','yacc.py',9),
-  ('table -> categoria','table',1,'p_table','yacc.py',10),
-  ('categoria -> header conteudo','categoria',2,'p_categoria','yacc.py',18),
-  ('header -> PAR_RET_OPEN WORD PAR_RET_CLOSE','header',3,'p_header','yacc.py',23),
-  ('conteudo -> conteudo linha','conteudo',2,'p_conteudo','yacc.py',27),
-  ('conteudo -> linha','conteudo',1,'p_conteudo','yacc.py',28),
-  ('linha -> WORD EQUALS BASIC_STRING','linha',3,'p_linha','yacc.py',36),
+  ('table -> table categoria','table',2,'p_table','yacc.py',10),
+  ('table -> categoria','table',1,'p_table','yacc.py',11),
+  ('categoria -> header conteudo','categoria',2,'p_categoria','yacc.py',19),
+  ('header -> PAR_RET_OPEN WORD PAR_RET_CLOSE','header',3,'p_header','yacc.py',24),
+  ('conteudo -> conteudo linha','conteudo',2,'p_conteudo','yacc.py',28),
+  ('conteudo -> linha','conteudo',1,'p_conteudo','yacc.py',29),
+  ('linha -> WORD EQUALS value','linha',3,'p_linha','yacc.py',37),
+  ('basicstring -> BASIC_STRING','basicstring',1,'p_basicstring','yacc.py',41),
+  ('value -> basicstring','value',1,'p_value','yacc.py',45),
 ]

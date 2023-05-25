@@ -37,10 +37,16 @@ def p_linha(p):
     '''linha : WORD EQUALS value '''
     p[0] = {p[1] : p[3]}
 
+def p_basicstring(p):
+    '''basicstring : BASIC_STRING'''
+    p[0] = p[1].strip("\"")
+
 def p_value(p):
-    '''value : BASIC_STRING'''
+    '''value : basicstring'''
     p[0] = p[1]
-    
+
+def p_error(p):
+    print("ERRO SINTATICO")
 parser = yacc.yacc()
 tab_in = ''' title = "TOML"
 [owner]

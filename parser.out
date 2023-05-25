@@ -18,39 +18,213 @@ Grammar
 
 Rule 0     S' -> program
 Rule 1     program -> linha table
-Rule 2     table -> categoria table
-Rule 3     categoria -> header conteudo
-Rule 4     header -> PAR_RET_OPEN WORD PAR_RET_CLOSE
-Rule 5     conteudo -> conteudo linha
-Rule 6     conteudo -> linha
-Rule 7     linha -> WORD EQUALS BASIC_STRING
+Rule 2     table -> table categoria
+Rule 3     table -> categoria
+Rule 4     categoria -> header conteudo
+Rule 5     header -> PAR_RET_OPEN WORD PAR_RET_CLOSE
+Rule 6     conteudo -> conteudo linha
+Rule 7     conteudo -> linha
+Rule 8     linha -> WORD EQUALS value
+Rule 9     basicstring -> BASIC_STRING
+Rule 10    value -> basicstring
 
 Terminals, with rules where they appear
 
-BASIC_STRING         : 7
+BASIC_STRING         : 9
 BINNUM               : 
 COMMA                : 
 COMMENT              : 
 DATE                 : 
 DOT                  : 
 EMPTYLINE            : 
-EQUALS               : 7
+EQUALS               : 8
 HEXNUM               : 
 INTNUM               : 
 LITERAL_STRING       : 
 OCTNUM               : 
-PAR_RET_CLOSE        : 4
-PAR_RET_OPEN         : 4
+PAR_RET_CLOSE        : 5
+PAR_RET_OPEN         : 5
 TIME                 : 
-WORD                 : 4 7
+WORD                 : 5 8
 error                : 
 
 Nonterminals, with rules where they appear
 
-categoria            : 2
-conteudo             : 3 5
-header               : 3
-linha                : 1 5 6
+basicstring          : 10
+categoria            : 2 3
+conteudo             : 4 6
+header               : 4
+linha                : 1 6 7
 program              : 0
 table                : 1 2
+value                : 8
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . linha table
+    (8) linha -> . WORD EQUALS value
+
+    WORD            shift and go to state 3
+
+    program                        shift and go to state 1
+    linha                          shift and go to state 2
+
+state 1
+
+    (0) S' -> program .
+
+
+
+state 2
+
+    (1) program -> linha . table
+    (2) table -> . table categoria
+    (3) table -> . categoria
+    (4) categoria -> . header conteudo
+    (5) header -> . PAR_RET_OPEN WORD PAR_RET_CLOSE
+
+    PAR_RET_OPEN    shift and go to state 7
+
+    table                          shift and go to state 4
+    categoria                      shift and go to state 5
+    header                         shift and go to state 6
+
+state 3
+
+    (8) linha -> WORD . EQUALS value
+
+    EQUALS          shift and go to state 8
+
+
+state 4
+
+    (1) program -> linha table .
+    (2) table -> table . categoria
+    (4) categoria -> . header conteudo
+    (5) header -> . PAR_RET_OPEN WORD PAR_RET_CLOSE
+
+    $end            reduce using rule 1 (program -> linha table .)
+    PAR_RET_OPEN    shift and go to state 7
+
+    categoria                      shift and go to state 9
+    header                         shift and go to state 6
+
+state 5
+
+    (3) table -> categoria .
+
+    PAR_RET_OPEN    reduce using rule 3 (table -> categoria .)
+    $end            reduce using rule 3 (table -> categoria .)
+
+
+state 6
+
+    (4) categoria -> header . conteudo
+    (6) conteudo -> . conteudo linha
+    (7) conteudo -> . linha
+    (8) linha -> . WORD EQUALS value
+
+    WORD            shift and go to state 3
+
+    conteudo                       shift and go to state 10
+    linha                          shift and go to state 11
+
+state 7
+
+    (5) header -> PAR_RET_OPEN . WORD PAR_RET_CLOSE
+
+    WORD            shift and go to state 12
+
+
+state 8
+
+    (8) linha -> WORD EQUALS . value
+    (10) value -> . basicstring
+    (9) basicstring -> . BASIC_STRING
+
+    BASIC_STRING    shift and go to state 15
+
+    value                          shift and go to state 13
+    basicstring                    shift and go to state 14
+
+state 9
+
+    (2) table -> table categoria .
+
+    PAR_RET_OPEN    reduce using rule 2 (table -> table categoria .)
+    $end            reduce using rule 2 (table -> table categoria .)
+
+
+state 10
+
+    (4) categoria -> header conteudo .
+    (6) conteudo -> conteudo . linha
+    (8) linha -> . WORD EQUALS value
+
+    PAR_RET_OPEN    reduce using rule 4 (categoria -> header conteudo .)
+    $end            reduce using rule 4 (categoria -> header conteudo .)
+    WORD            shift and go to state 3
+
+    linha                          shift and go to state 16
+
+state 11
+
+    (7) conteudo -> linha .
+
+    WORD            reduce using rule 7 (conteudo -> linha .)
+    PAR_RET_OPEN    reduce using rule 7 (conteudo -> linha .)
+    $end            reduce using rule 7 (conteudo -> linha .)
+
+
+state 12
+
+    (5) header -> PAR_RET_OPEN WORD . PAR_RET_CLOSE
+
+    PAR_RET_CLOSE   shift and go to state 17
+
+
+state 13
+
+    (8) linha -> WORD EQUALS value .
+
+    PAR_RET_OPEN    reduce using rule 8 (linha -> WORD EQUALS value .)
+    WORD            reduce using rule 8 (linha -> WORD EQUALS value .)
+    $end            reduce using rule 8 (linha -> WORD EQUALS value .)
+
+
+state 14
+
+    (10) value -> basicstring .
+
+    PAR_RET_OPEN    reduce using rule 10 (value -> basicstring .)
+    WORD            reduce using rule 10 (value -> basicstring .)
+    $end            reduce using rule 10 (value -> basicstring .)
+
+
+state 15
+
+    (9) basicstring -> BASIC_STRING .
+
+    PAR_RET_OPEN    reduce using rule 9 (basicstring -> BASIC_STRING .)
+    WORD            reduce using rule 9 (basicstring -> BASIC_STRING .)
+    $end            reduce using rule 9 (basicstring -> BASIC_STRING .)
+
+
+state 16
+
+    (6) conteudo -> conteudo linha .
+
+    WORD            reduce using rule 6 (conteudo -> conteudo linha .)
+    PAR_RET_OPEN    reduce using rule 6 (conteudo -> conteudo linha .)
+    $end            reduce using rule 6 (conteudo -> conteudo linha .)
+
+
+state 17
+
+    (5) header -> PAR_RET_OPEN WORD PAR_RET_CLOSE .
+
+    WORD            reduce using rule 5 (header -> PAR_RET_OPEN WORD PAR_RET_CLOSE .)
 

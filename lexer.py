@@ -1,6 +1,9 @@
 import ply.lex as lex
 
 tokens = [
+    'ZOFFSETDATETIME',
+    'OFFSETDATETIME',
+    'DATETIME',
     'INTNUM',
     'EQUALS',
     'HEXNUM',
@@ -22,6 +25,8 @@ tokens = [
     'NEWLINE',
 ]
 
+t_TIME = r"\d{2}\:\d{2}\:\d{2}"
+t_DATE = r'\d{4}\-\d{2}\-\d{2}'
 t_COMMENT = r'\#.*'
 t_EQUALS = r'\='
 t_PAR_RET_OPEN = r'\['
@@ -31,16 +36,20 @@ t_COMMA = r'\,'
 t_EMPTYLINE = r'^[ \t]*\n$'
 t_NEWLINE = r'\n'
 
+def t_OFFSETDATETIME(t):
+    r'\d{4}\-\d{2}\-\d{2}T\d{2}\:\d{2}\:\d{2}[-+]\d{1}\:\d{2}'
+    return t
+
+def t_ZOFFSETDATETIME(t):
+    r'\d{4}\-\d{2}\-\d{2}T\d{2}\:\d{2}\:\d{2}Z'
+    return t
+    
+def t_DATETIME(t):
+    r'\d{4}\-\d{2}\-\d{2}T\d{2}\:\d{2}\:\d{2}'
+    return t
+
 def t_SUBTITLE(t):
     r'\.\w+'
-    return t
-
-def t_DATE(t):
-    r'\d{4}\-\d{2}\-\d{2}'
-    return t
-
-def t_TIME(t):
-    r"\d{2}\:\d{2}\:\d{2}"
     return t
 
 def t_EXPONENCIALNUM(t):
@@ -64,7 +73,7 @@ def t_OCTNUM(t):
     return t
 
 def t_INTNUM(t):
-    r"[-|+]*\d+"
+    r"[-+]?[0-9]+"
     t.value = int(t.value)
     return t
 

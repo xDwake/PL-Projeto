@@ -1,17 +1,18 @@
- title = "baguete"
+ title = "teste_subclasse"
 
 [owner]
-name = "Tom Preston-Werner"
-dob = "ashfahr"
-dobas = 'aufasfha'
-dobassss = 0b1010
+name = "Projeto_PL"
 
 [database]
-[database.coiso]
-enabled = [123,0x21c,1923-12-02]
-ports = "coiso"
-data = "delta"
-temp_targets = 23.21e231
+[database.MAIN]
+enabled = 'yes'
+ports = [27014,27015,12982]
+binaryID = 0b10100010
+exec_Time = 23.21e231
 
-[ola]
-some = "body"
+[logs]
+filename = 'logs.txt'
+datetime = 1979-05-27T07:32:00
+offsetneg = 1979-05-27T07:32:00-7:00
+offsetpos = 1979-05-27T07:32:00+7:00
+offsetZ = 1979-05-27T07:32:00Z

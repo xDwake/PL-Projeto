@@ -67,6 +67,9 @@ def p_value(p):
     '''value : basicstring
              | LITERALSTRING
              | TIME
+             | OFFSETDATETIME
+             | ZOFFSETDATETIME
+             | DATETIME
              | DATE
              | EXPONENCIALNUM
              | BINNUM

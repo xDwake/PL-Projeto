@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'BASICSTRING BINNUM COMMA COMMENT DATE DOT EMPTYLINE EQUALS EXPONENCIALNUM HEXNUM INTNUM LITERALSTRING NEWLINE OCTNUM PAR_RET_CLOSE PAR_RET_OPEN SUBTITLE TIME WORDprogram : linha tabletable : table categoria\n             | categoriacategoria : header conteudo\n                 | header subtitle conteudo\n                 | subtitle conteudoheader : PAR_RET_OPEN WORD PAR_RET_CLOSEsubtitle : PAR_RET_OPEN WORD SUBTITLE PAR_RET_CLOSEconteudo : conteudo linha\n                | linhabasicstring : BASICSTRINGlinha : WORD EQUALS value\n             | WORD EQUALS PAR_RET_OPEN lista PAR_RET_CLOSElista : lista COMMA value\n             | valuevalue : basicstring\n             | LITERALSTRING\n             | TIME\n             | DATE\n             | EXPONENCIALNUM\n             | BINNUM\n             | INTNUM\n             | HEXNUM\n             | OCTNUM\n             | lista\n             '
+_lr_signature = 'BASICSTRING BINNUM COMMA COMMENT DATE DATETIME DOT EMPTYLINE EQUALS EXPONENCIALNUM HEXNUM INTNUM LITERALSTRING NEWLINE OCTNUM OFFSETDATETIME PAR_RET_CLOSE PAR_RET_OPEN SUBTITLE TIME WORD ZOFFSETDATETIMEprogram : linha tabletable : table categoria\n             | categoriacategoria : header conteudo\n                 | header subtitle conteudo\n                 | subtitle conteudoheader : PAR_RET_OPEN WORD PAR_RET_CLOSEsubtitle : PAR_RET_OPEN WORD SUBTITLE PAR_RET_CLOSEconteudo : conteudo linha\n                | linhabasicstring : BASICSTRINGlinha : WORD EQUALS value\n             | WORD EQUALS PAR_RET_OPEN lista PAR_RET_CLOSElista : lista COMMA value\n             | valuevalue : basicstring\n             | LITERALSTRING\n             | TIME\n             | OFFSETDATETIME\n             | ZOFFSETDATETIME\n             | DATETIME\n             | DATE\n             | EXPONENCIALNUM\n             | BINNUM\n             | INTNUM\n             | HEXNUM\n             | OCTNUM\n             | lista\n             '
     
-_lr_action_items = {'WORD':([0,6,7,8,11,12,13,14,15,17,19,20,21,22,23,24,25,26,27,28,29,30,31,33,38,39,40,],[3,3,3,16,3,3,-10,32,3,-12,-25,-16,-17,-18,-19,-20,-21,-22,-23,-24,-11,-9,3,-7,-8,-13,-14,]),'$end':([1,4,5,10,11,13,15,17,19,20,21,22,23,24,25,26,27,28,29,30,31,39,40,],[0,-1,-3,-2,-4,-10,-6,-12,-25,-16,-17,-18,-19,-20,-21,-22,-23,-24,-11,-9,-5,-13,-14,]),'PAR_RET_OPEN':([2,4,5,6,9,10,11,13,15,17,19,20,21,22,23,24,25,26,27,28,29,30,31,33,39,40,],[8,8,-3,14,18,-2,-4,-10,-6,-12,-25,-16,-17,-18,-19,-20,-21,-22,-23,-24,-11,-9,-5,-7,-13,-14,]),'EQUALS':([3,],[9,]),'LITERALSTRING':([9,18,37,],[21,21,21,]),'TIME':([9,18,37,],[22,22,22,]),'DATE':([9,18,37,],[23,23,23,]),'EXPONENCIALNUM':([9,18,37,],[24,24,24,]),'BINNUM':([9,18,37,],[25,25,25,]),'INTNUM':([9,18,37,],[26,26,26,]),'HEXNUM':([9,18,37,],[27,27,27,]),'OCTNUM':([9,18,37,],[28,28,28,]),'BASICSTRING':([9,18,37,],[29,29,29,]),'PAR_RET_CLOSE':([16,19,20,21,22,23,24,25,26,27,28,29,34,35,36,40,],[33,-25,-16,-17,-18,-19,-20,-21,-22,-23,-24,-11,38,39,-15,-14,]),'SUBTITLE':([16,32,],[34,34,]),'COMMA':([17,19,20,21,22,23,24,25,26,27,28,29,35,36,40,],[-15,37,-16,-17,-18,-19,-20,-21,-22,-23,-24,-11,37,-15,-14,]),}
+_lr_action_items = {'WORD':([0,6,7,8,11,12,13,14,15,17,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,36,41,42,43,],[3,3,3,16,3,3,-10,35,3,-12,-28,-16,-17,-18,-19,-20,-21,-22,-23,-24,-25,-26,-27,-11,-9,3,-7,-8,-13,-14,]),'$end':([1,4,5,10,11,13,15,17,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,42,43,],[0,-1,-3,-2,-4,-10,-6,-12,-28,-16,-17,-18,-19,-20,-21,-22,-23,-24,-25,-26,-27,-11,-9,-5,-13,-14,]),'PAR_RET_OPEN':([2,4,5,6,9,10,11,13,15,17,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,36,42,43,],[8,8,-3,14,18,-2,-4,-10,-6,-12,-28,-16,-17,-18,-19,-20,-21,-22,-23,-24,-25,-26,-27,-11,-9,-5,-7,-13,-14,]),'EQUALS':([3,],[9,]),'LITERALSTRING':([9,18,40,],[21,21,21,]),'TIME':([9,18,40,],[22,22,22,]),'OFFSETDATETIME':([9,18,40,],[23,23,23,]),'ZOFFSETDATETIME':([9,18,40,],[24,24,24,]),'DATETIME':([9,18,40,],[25,25,25,]),'DATE':([9,18,40,],[26,26,26,]),'EXPONENCIALNUM':([9,18,40,],[27,27,27,]),'BINNUM':([9,18,40,],[28,28,28,]),'INTNUM':([9,18,40,],[29,29,29,]),'HEXNUM':([9,18,40,],[30,30,30,]),'OCTNUM':([9,18,40,],[31,31,31,]),'BASICSTRING':([9,18,40,],[32,32,32,]),'PAR_RET_CLOSE':([16,19,20,21,22,23,24,25,26,27,28,29,30,31,32,37,38,39,43,],[36,-28,-16,-17,-18,-19,-20,-21,-22,-23,-24,-25,-26,-27,-11,41,42,-15,-14,]),'SUBTITLE':([16,35,],[37,37,]),'COMMA':([17,19,20,21,22,23,24,25,26,27,28,29,30,31,32,38,39,43,],[-15,40,-16,-17,-18,-19,-20,-21,-22,-23,-24,-25,-26,-27,-11,40,-15,-14,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'program':([0,],[1,]),'linha':([0,6,7,11,12,15,31,],[2,13,13,30,13,30,30,]),'table':([2,],[4,]),'categoria':([2,4,],[5,10,]),'header':([2,4,],[6,6,]),'subtitle':([2,4,6,],[7,7,12,]),'conteudo':([6,7,12,],[11,15,31,]),'value':([9,18,37,],[17,36,40,]),'lista':([9,18,37,],[19,35,19,]),'basicstring':([9,18,37,],[20,20,20,]),}
+_lr_goto_items = {'program':([0,],[1,]),'linha':([0,6,7,11,12,15,34,],[2,13,13,33,13,33,33,]),'table':([2,],[4,]),'categoria':([2,4,],[5,10,]),'header':([2,4,],[6,6,]),'subtitle':([2,4,6,],[7,7,12,]),'conteudo':([6,7,12,],[11,15,34,]),'value':([9,18,40,],[17,39,43,]),'lista':([9,18,40,],[19,38,19,]),'basicstring':([9,18,40,],[20,20,20,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -45,11 +45,14 @@ _lr_productions = [
   ('value -> basicstring','value',1,'p_value','yacc.py',67),
   ('value -> LITERALSTRING','value',1,'p_value','yacc.py',68),
   ('value -> TIME','value',1,'p_value','yacc.py',69),
-  ('value -> DATE','value',1,'p_value','yacc.py',70),
-  ('value -> EXPONENCIALNUM','value',1,'p_value','yacc.py',71),
-  ('value -> BINNUM','value',1,'p_value','yacc.py',72),
-  ('value -> INTNUM','value',1,'p_value','yacc.py',73),
-  ('value -> HEXNUM','value',1,'p_value','yacc.py',74),
-  ('value -> OCTNUM','value',1,'p_value','yacc.py',75),
-  ('value -> lista','value',1,'p_value','yacc.py',76),
+  ('value -> OFFSETDATETIME','value',1,'p_value','yacc.py',70),
+  ('value -> ZOFFSETDATETIME','value',1,'p_value','yacc.py',71),
+  ('value -> DATETIME','value',1,'p_value','yacc.py',72),
+  ('value -> DATE','value',1,'p_value','yacc.py',73),
+  ('value -> EXPONENCIALNUM','value',1,'p_value','yacc.py',74),
+  ('value -> BINNUM','value',1,'p_value','yacc.py',75),
+  ('value -> INTNUM','value',1,'p_value','yacc.py',76),
+  ('value -> HEXNUM','value',1,'p_value','yacc.py',77),
+  ('value -> OCTNUM','value',1,'p_value','yacc.py',78),
+  ('value -> lista','value',1,'p_value','yacc.py',79),
 ]

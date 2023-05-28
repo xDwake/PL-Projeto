@@ -25,8 +25,6 @@ tokens = [
     'NEWLINE',
 ]
 
-t_TIME = r"\d{2}\:\d{2}\:\d{2}"
-t_DATE = r'\d{4}\-\d{2}\-\d{2}'
 t_COMMENT = r'\#.*'
 t_EQUALS = r'\='
 t_PAR_RET_OPEN = r'\['
@@ -48,6 +46,14 @@ def t_DATETIME(t):
     r'\d{4}\-\d{2}\-\d{2}T\d{2}\:\d{2}\:\d{2}'
     return t
 
+def t_TIME(t):
+    r"\d{2}\:\d{2}\:\d{2}"
+    return t
+
+def t_DATE(t):
+    r'\d{4}\-\d{2}\-\d{2}'
+    return t
+
 def t_SUBTITLE(t):
     r'\.\w+'
     return t
@@ -61,7 +67,7 @@ def t_WORD(t):
     return t
 
 def t_HEXNUM(t):
-    r"0x[\d|a-z]+"
+    r"0x[\d|a-f]+"
     return t
 
 def t_BINNUM(t):
@@ -129,7 +135,7 @@ hosts = [
 "omega"
 ]
 """
-with open('teste_subclasse.toml', 'r') as f:
+with open('teste_multisubclasses.toml', 'r') as f:
     tab_in = f.read().replace('\n','')
     
 lexer.input(tab_in)

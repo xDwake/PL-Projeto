@@ -49,11 +49,15 @@ def p_basicstring(p):
 
 def p_linha(p):
     '''linha : WORD EQUALS value
-             | WORD EQUALS PAR_RET_OPEN lista PAR_RET_CLOSE'''
+             | WORD EQUALS valuelista'''
     if len(p) == 4:
         p[0] = {p[1] : p[3]}
     else:
         p[0] = {p[1] : p[4]}
+
+def p_valuelista(p):
+    '''valuelista : PAR_RET_OPEN lista PAR_RET_CLOSE'''
+    p[0] = p[2]
 
 def p_lista(p):
     '''lista : lista COMMA value
@@ -76,7 +80,7 @@ def p_value(p):
              | INTNUM
              | HEXNUM
              | OCTNUM
-             | lista
+             | valuelista
              '''
 
     p[0] = p[1]

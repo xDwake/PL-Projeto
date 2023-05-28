@@ -8,7 +8,8 @@ name = "Projeto_PL"
 enabled = 'yes'
 ports = [27014,27015,12982]
 binaryID = 0b10100010
-exec_Time = 23.21e231
+hexID = 0x2ac
+time = 23.21e231
 
 [logs]
 filename = 'logs.txt'

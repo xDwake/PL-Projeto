@@ -1,0 +1,14 @@
+ title = "baguete"
+
+[owner]
+name = "Tom Preston-Werner"
+dob = "ashfahr"
+dobas = 'aufasfha'
+dobassss = 0b1010
+
+[database]
+[database.coiso]
+enabled = [123,0x21c,1923-12-02]
+ports = "coiso"
+data = "delta"
+temp_targets = 23.21e231

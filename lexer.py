@@ -6,8 +6,8 @@ tokens = [
     'HEXNUM',
     'OCTNUM',
     'BINNUM',
-    'BASIC_STRING',
-    'LITERAL_STRING',
+    'BASICSTRING',
+    'LITERALSTRING',
     'COMMENT',
     'PAR_RET_OPEN',
     'PAR_RET_CLOSE',
@@ -16,7 +16,10 @@ tokens = [
     'WORD',
     'DOT',
     'COMMA',
-    'EMPTYLINE'
+    'EMPTYLINE',
+    'EXPONENCIALNUM',
+    'SUBTITLE',
+    'NEWLINE',
 ]
 
 t_COMMENT = r'\#.*'
@@ -26,29 +29,38 @@ t_PAR_RET_CLOSE = r'\]'
 t_DOT = r'\.'
 t_COMMA = r'\,'
 t_EMPTYLINE = r'^[ \t]*\n$'
+t_NEWLINE = r'\n'
+
+def t_SUBTITLE(t):
+    r'\.\w+'
+    return t
 
 def t_DATE(t):
-    r"\d{4}-\d{2}-\d{2}"
+    r'\d{4}\-\d{2}\-\d{2}'
     return t
 
 def t_TIME(t):
-    r"\d{2}:\d{2}:\d{2}"
+    r"\d{2}\:\d{2}\:\d{2}"
     return t
 
+def t_EXPONENCIALNUM(t):
+    r"-*\d+[\.\d]*e\d+"
+    return t
+    
 def t_WORD(t):
     r"[a-zA-Z\_]+"
     return t
 
 def t_HEXNUM(t):
-    r"0x\d+"
+    r"0x[\d|a-z]+"
     return t
 
 def t_BINNUM(t):
-    r"0b\d+"
+    r"0b[0|1]+"
     return t
 
 def t_OCTNUM(t):
-    r"0o\d+"
+    r"0o[\d|\w]+"
     return t
 
 def t_INTNUM(t):
@@ -61,15 +73,11 @@ def t_FLOATNUM(t):
     t.value = float(t.value)
     return t
 
-def t_EXPONENCIALNUM(t):
-    r"-*\d+[\.\d]*e\d+"
-    return t
-
-def t_BASIC_STRING(t):
+def t_BASICSTRING(t):
     r"\s?\"[\w|\-|\.|\s]+\""
     return t
 
-def t_LINEAR_STRING(t):
+def t_LITERALSTRING(t):
     r"\s?\'[\w|\-|\.|\s]+\'"
     return t
 
@@ -77,7 +85,7 @@ def t_error(t):
     print(f"Caracter ilegal {t.value}")
     t.lexer.skip(1)
 
-t_ignore = ' \n\t'
+t_ignore = ' \t'
 
 lexer = lex.lex()
 
@@ -112,7 +120,10 @@ hosts = [
 "omega"
 ]
 """
+with open('teste_subclasse.toml', 'r') as f:
+    tab_in = f.read().replace('\n','')
+    
+lexer.input(tab_in)
 
-lexer.input(string)
 while tok := lexer.token():
     print(tok)

@@ -2,17 +2,10 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
-    BINNUM
-    COMMA
     COMMENT
-    DATE
     DOT
     EMPTYLINE
-    HEXNUM
-    INTNUM
-    LITERAL_STRING
-    OCTNUM
-    TIME
+    NEWLINE
 
 Grammar
 
@@ -21,43 +14,63 @@ Rule 1     program -> linha table
 Rule 2     table -> table categoria
 Rule 3     table -> categoria
 Rule 4     categoria -> header conteudo
-Rule 5     header -> PAR_RET_OPEN WORD PAR_RET_CLOSE
-Rule 6     conteudo -> conteudo linha
-Rule 7     conteudo -> linha
-Rule 8     linha -> WORD EQUALS value
-Rule 9     basicstring -> BASIC_STRING
-Rule 10    value -> basicstring
+Rule 5     categoria -> header subtitle conteudo
+Rule 6     categoria -> subtitle conteudo
+Rule 7     header -> PAR_RET_OPEN WORD PAR_RET_CLOSE
+Rule 8     subtitle -> PAR_RET_OPEN WORD SUBTITLE PAR_RET_CLOSE
+Rule 9     conteudo -> conteudo linha
+Rule 10    conteudo -> linha
+Rule 11    basicstring -> BASICSTRING
+Rule 12    linha -> WORD EQUALS value
+Rule 13    linha -> WORD EQUALS PAR_RET_OPEN lista PAR_RET_CLOSE
+Rule 14    lista -> lista COMMA value
+Rule 15    lista -> value
+Rule 16    value -> basicstring
+Rule 17    value -> LITERALSTRING
+Rule 18    value -> TIME
+Rule 19    value -> DATE
+Rule 20    value -> EXPONENCIALNUM
+Rule 21    value -> BINNUM
+Rule 22    value -> INTNUM
+Rule 23    value -> HEXNUM
+Rule 24    value -> OCTNUM
+Rule 25    value -> lista
 
 Terminals, with rules where they appear
 
-BASIC_STRING         : 9
-BINNUM               : 
-COMMA                : 
+BASICSTRING          : 11
+BINNUM               : 21
+COMMA                : 14
 COMMENT              : 
-DATE                 : 
+DATE                 : 19
 DOT                  : 
 EMPTYLINE            : 
-EQUALS               : 8
-HEXNUM               : 
-INTNUM               : 
-LITERAL_STRING       : 
-OCTNUM               : 
-PAR_RET_CLOSE        : 5
-PAR_RET_OPEN         : 5
-TIME                 : 
-WORD                 : 5 8
+EQUALS               : 12 13
+EXPONENCIALNUM       : 20
+HEXNUM               : 23
+INTNUM               : 22
+LITERALSTRING        : 17
+NEWLINE              : 
+OCTNUM               : 24
+PAR_RET_CLOSE        : 7 8 13
+PAR_RET_OPEN         : 7 8 13
+SUBTITLE             : 8
+TIME                 : 18
+WORD                 : 7 8 12 13
 error                : 
 
 Nonterminals, with rules where they appear
 
-basicstring          : 10
+basicstring          : 16
 categoria            : 2 3
-conteudo             : 4 6
-header               : 4
-linha                : 1 6 7
+conteudo             : 4 5 6 9
+header               : 4 5
+linha                : 1 9 10
+lista                : 13 14 25
 program              : 0
+subtitle             : 5 6
 table                : 1 2
-value                : 8
+value                : 12 14 15
 
 Parsing method: LALR
 
@@ -65,7 +78,8 @@ state 0
 
     (0) S' -> . program
     (1) program -> . linha table
-    (8) linha -> . WORD EQUALS value
+    (12) linha -> . WORD EQUALS value
+    (13) linha -> . WORD EQUALS PAR_RET_OPEN lista PAR_RET_CLOSE
 
     WORD            shift and go to state 3
 
@@ -84,19 +98,24 @@ state 2
     (2) table -> . table categoria
     (3) table -> . categoria
     (4) categoria -> . header conteudo
-    (5) header -> . PAR_RET_OPEN WORD PAR_RET_CLOSE
+    (5) categoria -> . header subtitle conteudo
+    (6) categoria -> . subtitle conteudo
+    (7) header -> . PAR_RET_OPEN WORD PAR_RET_CLOSE
+    (8) subtitle -> . PAR_RET_OPEN WORD SUBTITLE PAR_RET_CLOSE
 
-    PAR_RET_OPEN    shift and go to state 7
+    PAR_RET_OPEN    shift and go to state 8
 
     table                          shift and go to state 4
     categoria                      shift and go to state 5
     header                         shift and go to state 6
+    subtitle                       shift and go to state 7
 
 state 3
 
-    (8) linha -> WORD . EQUALS value
+    (12) linha -> WORD . EQUALS value
+    (13) linha -> WORD . EQUALS PAR_RET_OPEN lista PAR_RET_CLOSE
 
-    EQUALS          shift and go to state 8
+    EQUALS          shift and go to state 9
 
 
 state 4
@@ -104,13 +123,17 @@ state 4
     (1) program -> linha table .
     (2) table -> table . categoria
     (4) categoria -> . header conteudo
-    (5) header -> . PAR_RET_OPEN WORD PAR_RET_CLOSE
+    (5) categoria -> . header subtitle conteudo
+    (6) categoria -> . subtitle conteudo
+    (7) header -> . PAR_RET_OPEN WORD PAR_RET_CLOSE
+    (8) subtitle -> . PAR_RET_OPEN WORD SUBTITLE PAR_RET_CLOSE
 
     $end            reduce using rule 1 (program -> linha table .)
-    PAR_RET_OPEN    shift and go to state 7
+    PAR_RET_OPEN    shift and go to state 8
 
-    categoria                      shift and go to state 9
+    categoria                      shift and go to state 10
     header                         shift and go to state 6
+    subtitle                       shift and go to state 7
 
 state 5
 
@@ -123,34 +146,75 @@ state 5
 state 6
 
     (4) categoria -> header . conteudo
-    (6) conteudo -> . conteudo linha
-    (7) conteudo -> . linha
-    (8) linha -> . WORD EQUALS value
+    (5) categoria -> header . subtitle conteudo
+    (9) conteudo -> . conteudo linha
+    (10) conteudo -> . linha
+    (8) subtitle -> . PAR_RET_OPEN WORD SUBTITLE PAR_RET_CLOSE
+    (12) linha -> . WORD EQUALS value
+    (13) linha -> . WORD EQUALS PAR_RET_OPEN lista PAR_RET_CLOSE
 
+    PAR_RET_OPEN    shift and go to state 14
     WORD            shift and go to state 3
 
-    conteudo                       shift and go to state 10
-    linha                          shift and go to state 11
+    conteudo                       shift and go to state 11
+    subtitle                       shift and go to state 12
+    linha                          shift and go to state 13
 
 state 7
 
-    (5) header -> PAR_RET_OPEN . WORD PAR_RET_CLOSE
+    (6) categoria -> subtitle . conteudo
+    (9) conteudo -> . conteudo linha
+    (10) conteudo -> . linha
+    (12) linha -> . WORD EQUALS value
+    (13) linha -> . WORD EQUALS PAR_RET_OPEN lista PAR_RET_CLOSE
 
-    WORD            shift and go to state 12
+    WORD            shift and go to state 3
 
+    conteudo                       shift and go to state 15
+    linha                          shift and go to state 13
 
 state 8
 
-    (8) linha -> WORD EQUALS . value
-    (10) value -> . basicstring
-    (9) basicstring -> . BASIC_STRING
+    (7) header -> PAR_RET_OPEN . WORD PAR_RET_CLOSE
+    (8) subtitle -> PAR_RET_OPEN . WORD SUBTITLE PAR_RET_CLOSE
 
-    BASIC_STRING    shift and go to state 15
+    WORD            shift and go to state 16
 
-    value                          shift and go to state 13
-    basicstring                    shift and go to state 14
 
 state 9
+
+    (12) linha -> WORD EQUALS . value
+    (13) linha -> WORD EQUALS . PAR_RET_OPEN lista PAR_RET_CLOSE
+    (16) value -> . basicstring
+    (17) value -> . LITERALSTRING
+    (18) value -> . TIME
+    (19) value -> . DATE
+    (20) value -> . EXPONENCIALNUM
+    (21) value -> . BINNUM
+    (22) value -> . INTNUM
+    (23) value -> . HEXNUM
+    (24) value -> . OCTNUM
+    (25) value -> . lista
+    (11) basicstring -> . BASICSTRING
+    (14) lista -> . lista COMMA value
+    (15) lista -> . value
+
+    PAR_RET_OPEN    shift and go to state 18
+    LITERALSTRING   shift and go to state 21
+    TIME            shift and go to state 22
+    DATE            shift and go to state 23
+    EXPONENCIALNUM  shift and go to state 24
+    BINNUM          shift and go to state 25
+    INTNUM          shift and go to state 26
+    HEXNUM          shift and go to state 27
+    OCTNUM          shift and go to state 28
+    BASICSTRING     shift and go to state 29
+
+    value                          shift and go to state 17
+    lista                          shift and go to state 19
+    basicstring                    shift and go to state 20
+
+state 10
 
     (2) table -> table categoria .
 
@@ -158,73 +222,387 @@ state 9
     $end            reduce using rule 2 (table -> table categoria .)
 
 
-state 10
+state 11
 
     (4) categoria -> header conteudo .
-    (6) conteudo -> conteudo . linha
-    (8) linha -> . WORD EQUALS value
+    (9) conteudo -> conteudo . linha
+    (12) linha -> . WORD EQUALS value
+    (13) linha -> . WORD EQUALS PAR_RET_OPEN lista PAR_RET_CLOSE
 
     PAR_RET_OPEN    reduce using rule 4 (categoria -> header conteudo .)
     $end            reduce using rule 4 (categoria -> header conteudo .)
     WORD            shift and go to state 3
 
-    linha                          shift and go to state 16
-
-state 11
-
-    (7) conteudo -> linha .
-
-    WORD            reduce using rule 7 (conteudo -> linha .)
-    PAR_RET_OPEN    reduce using rule 7 (conteudo -> linha .)
-    $end            reduce using rule 7 (conteudo -> linha .)
-
+    linha                          shift and go to state 30
 
 state 12
 
-    (5) header -> PAR_RET_OPEN WORD . PAR_RET_CLOSE
+    (5) categoria -> header subtitle . conteudo
+    (9) conteudo -> . conteudo linha
+    (10) conteudo -> . linha
+    (12) linha -> . WORD EQUALS value
+    (13) linha -> . WORD EQUALS PAR_RET_OPEN lista PAR_RET_CLOSE
 
-    PAR_RET_CLOSE   shift and go to state 17
+    WORD            shift and go to state 3
 
+    conteudo                       shift and go to state 31
+    linha                          shift and go to state 13
 
 state 13
 
-    (8) linha -> WORD EQUALS value .
+    (10) conteudo -> linha .
 
-    PAR_RET_OPEN    reduce using rule 8 (linha -> WORD EQUALS value .)
-    WORD            reduce using rule 8 (linha -> WORD EQUALS value .)
-    $end            reduce using rule 8 (linha -> WORD EQUALS value .)
+    WORD            reduce using rule 10 (conteudo -> linha .)
+    PAR_RET_OPEN    reduce using rule 10 (conteudo -> linha .)
+    $end            reduce using rule 10 (conteudo -> linha .)
 
 
 state 14
 
-    (10) value -> basicstring .
+    (8) subtitle -> PAR_RET_OPEN . WORD SUBTITLE PAR_RET_CLOSE
 
-    PAR_RET_OPEN    reduce using rule 10 (value -> basicstring .)
-    WORD            reduce using rule 10 (value -> basicstring .)
-    $end            reduce using rule 10 (value -> basicstring .)
+    WORD            shift and go to state 32
 
 
 state 15
 
-    (9) basicstring -> BASIC_STRING .
+    (6) categoria -> subtitle conteudo .
+    (9) conteudo -> conteudo . linha
+    (12) linha -> . WORD EQUALS value
+    (13) linha -> . WORD EQUALS PAR_RET_OPEN lista PAR_RET_CLOSE
 
-    PAR_RET_OPEN    reduce using rule 9 (basicstring -> BASIC_STRING .)
-    WORD            reduce using rule 9 (basicstring -> BASIC_STRING .)
-    $end            reduce using rule 9 (basicstring -> BASIC_STRING .)
+    PAR_RET_OPEN    reduce using rule 6 (categoria -> subtitle conteudo .)
+    $end            reduce using rule 6 (categoria -> subtitle conteudo .)
+    WORD            shift and go to state 3
 
+    linha                          shift and go to state 30
 
 state 16
 
-    (6) conteudo -> conteudo linha .
+    (7) header -> PAR_RET_OPEN WORD . PAR_RET_CLOSE
+    (8) subtitle -> PAR_RET_OPEN WORD . SUBTITLE PAR_RET_CLOSE
 
-    WORD            reduce using rule 6 (conteudo -> conteudo linha .)
-    PAR_RET_OPEN    reduce using rule 6 (conteudo -> conteudo linha .)
-    $end            reduce using rule 6 (conteudo -> conteudo linha .)
+    PAR_RET_CLOSE   shift and go to state 33
+    SUBTITLE        shift and go to state 34
 
 
 state 17
 
-    (5) header -> PAR_RET_OPEN WORD PAR_RET_CLOSE .
+    (12) linha -> WORD EQUALS value .
+    (15) lista -> value .
 
-    WORD            reduce using rule 5 (header -> PAR_RET_OPEN WORD PAR_RET_CLOSE .)
+  ! reduce/reduce conflict for PAR_RET_OPEN resolved using rule 12 (linha -> WORD EQUALS value .)
+  ! reduce/reduce conflict for WORD resolved using rule 12 (linha -> WORD EQUALS value .)
+  ! reduce/reduce conflict for $end resolved using rule 12 (linha -> WORD EQUALS value .)
+    PAR_RET_OPEN    reduce using rule 12 (linha -> WORD EQUALS value .)
+    WORD            reduce using rule 12 (linha -> WORD EQUALS value .)
+    $end            reduce using rule 12 (linha -> WORD EQUALS value .)
+    COMMA           reduce using rule 15 (lista -> value .)
 
+  ! PAR_RET_OPEN    [ reduce using rule 15 (lista -> value .) ]
+  ! WORD            [ reduce using rule 15 (lista -> value .) ]
+  ! $end            [ reduce using rule 15 (lista -> value .) ]
+
+
+state 18
+
+    (13) linha -> WORD EQUALS PAR_RET_OPEN . lista PAR_RET_CLOSE
+    (14) lista -> . lista COMMA value
+    (15) lista -> . value
+    (16) value -> . basicstring
+    (17) value -> . LITERALSTRING
+    (18) value -> . TIME
+    (19) value -> . DATE
+    (20) value -> . EXPONENCIALNUM
+    (21) value -> . BINNUM
+    (22) value -> . INTNUM
+    (23) value -> . HEXNUM
+    (24) value -> . OCTNUM
+    (25) value -> . lista
+    (11) basicstring -> . BASICSTRING
+
+    LITERALSTRING   shift and go to state 21
+    TIME            shift and go to state 22
+    DATE            shift and go to state 23
+    EXPONENCIALNUM  shift and go to state 24
+    BINNUM          shift and go to state 25
+    INTNUM          shift and go to state 26
+    HEXNUM          shift and go to state 27
+    OCTNUM          shift and go to state 28
+    BASICSTRING     shift and go to state 29
+
+    lista                          shift and go to state 35
+    value                          shift and go to state 36
+    basicstring                    shift and go to state 20
+
+state 19
+
+    (25) value -> lista .
+    (14) lista -> lista . COMMA value
+
+  ! shift/reduce conflict for COMMA resolved as shift
+    PAR_RET_OPEN    reduce using rule 25 (value -> lista .)
+    WORD            reduce using rule 25 (value -> lista .)
+    $end            reduce using rule 25 (value -> lista .)
+    PAR_RET_CLOSE   reduce using rule 25 (value -> lista .)
+    COMMA           shift and go to state 37
+
+  ! COMMA           [ reduce using rule 25 (value -> lista .) ]
+
+
+state 20
+
+    (16) value -> basicstring .
+
+    PAR_RET_OPEN    reduce using rule 16 (value -> basicstring .)
+    WORD            reduce using rule 16 (value -> basicstring .)
+    $end            reduce using rule 16 (value -> basicstring .)
+    COMMA           reduce using rule 16 (value -> basicstring .)
+    PAR_RET_CLOSE   reduce using rule 16 (value -> basicstring .)
+
+
+state 21
+
+    (17) value -> LITERALSTRING .
+
+    PAR_RET_OPEN    reduce using rule 17 (value -> LITERALSTRING .)
+    WORD            reduce using rule 17 (value -> LITERALSTRING .)
+    $end            reduce using rule 17 (value -> LITERALSTRING .)
+    COMMA           reduce using rule 17 (value -> LITERALSTRING .)
+    PAR_RET_CLOSE   reduce using rule 17 (value -> LITERALSTRING .)
+
+
+state 22
+
+    (18) value -> TIME .
+
+    PAR_RET_OPEN    reduce using rule 18 (value -> TIME .)
+    WORD            reduce using rule 18 (value -> TIME .)
+    $end            reduce using rule 18 (value -> TIME .)
+    COMMA           reduce using rule 18 (value -> TIME .)
+    PAR_RET_CLOSE   reduce using rule 18 (value -> TIME .)
+
+
+state 23
+
+    (19) value -> DATE .
+
+    PAR_RET_OPEN    reduce using rule 19 (value -> DATE .)
+    WORD            reduce using rule 19 (value -> DATE .)
+    $end            reduce using rule 19 (value -> DATE .)
+    COMMA           reduce using rule 19 (value -> DATE .)
+    PAR_RET_CLOSE   reduce using rule 19 (value -> DATE .)
+
+
+state 24
+
+    (20) value -> EXPONENCIALNUM .
+
+    PAR_RET_OPEN    reduce using rule 20 (value -> EXPONENCIALNUM .)
+    WORD            reduce using rule 20 (value -> EXPONENCIALNUM .)
+    $end            reduce using rule 20 (value -> EXPONENCIALNUM .)
+    COMMA           reduce using rule 20 (value -> EXPONENCIALNUM .)
+    PAR_RET_CLOSE   reduce using rule 20 (value -> EXPONENCIALNUM .)
+
+
+state 25
+
+    (21) value -> BINNUM .
+
+    PAR_RET_OPEN    reduce using rule 21 (value -> BINNUM .)
+    WORD            reduce using rule 21 (value -> BINNUM .)
+    $end            reduce using rule 21 (value -> BINNUM .)
+    COMMA           reduce using rule 21 (value -> BINNUM .)
+    PAR_RET_CLOSE   reduce using rule 21 (value -> BINNUM .)
+
+
+state 26
+
+    (22) value -> INTNUM .
+
+    PAR_RET_OPEN    reduce using rule 22 (value -> INTNUM .)
+    WORD            reduce using rule 22 (value -> INTNUM .)
+    $end            reduce using rule 22 (value -> INTNUM .)
+    COMMA           reduce using rule 22 (value -> INTNUM .)
+    PAR_RET_CLOSE   reduce using rule 22 (value -> INTNUM .)
+
+
+state 27
+
+    (23) value -> HEXNUM .
+
+    PAR_RET_OPEN    reduce using rule 23 (value -> HEXNUM .)
+    WORD            reduce using rule 23 (value -> HEXNUM .)
+    $end            reduce using rule 23 (value -> HEXNUM .)
+    COMMA           reduce using rule 23 (value -> HEXNUM .)
+    PAR_RET_CLOSE   reduce using rule 23 (value -> HEXNUM .)
+
+
+state 28
+
+    (24) value -> OCTNUM .
+
+    PAR_RET_OPEN    reduce using rule 24 (value -> OCTNUM .)
+    WORD            reduce using rule 24 (value -> OCTNUM .)
+    $end            reduce using rule 24 (value -> OCTNUM .)
+    COMMA           reduce using rule 24 (value -> OCTNUM .)
+    PAR_RET_CLOSE   reduce using rule 24 (value -> OCTNUM .)
+
+
+state 29
+
+    (11) basicstring -> BASICSTRING .
+
+    PAR_RET_OPEN    reduce using rule 11 (basicstring -> BASICSTRING .)
+    WORD            reduce using rule 11 (basicstring -> BASICSTRING .)
+    $end            reduce using rule 11 (basicstring -> BASICSTRING .)
+    COMMA           reduce using rule 11 (basicstring -> BASICSTRING .)
+    PAR_RET_CLOSE   reduce using rule 11 (basicstring -> BASICSTRING .)
+
+
+state 30
+
+    (9) conteudo -> conteudo linha .
+
+    WORD            reduce using rule 9 (conteudo -> conteudo linha .)
+    PAR_RET_OPEN    reduce using rule 9 (conteudo -> conteudo linha .)
+    $end            reduce using rule 9 (conteudo -> conteudo linha .)
+
+
+state 31
+
+    (5) categoria -> header subtitle conteudo .
+    (9) conteudo -> conteudo . linha
+    (12) linha -> . WORD EQUALS value
+    (13) linha -> . WORD EQUALS PAR_RET_OPEN lista PAR_RET_CLOSE
+
+    PAR_RET_OPEN    reduce using rule 5 (categoria -> header subtitle conteudo .)
+    $end            reduce using rule 5 (categoria -> header subtitle conteudo .)
+    WORD            shift and go to state 3
+
+    linha                          shift and go to state 30
+
+state 32
+
+    (8) subtitle -> PAR_RET_OPEN WORD . SUBTITLE PAR_RET_CLOSE
+
+    SUBTITLE        shift and go to state 34
+
+
+state 33
+
+    (7) header -> PAR_RET_OPEN WORD PAR_RET_CLOSE .
+
+    PAR_RET_OPEN    reduce using rule 7 (header -> PAR_RET_OPEN WORD PAR_RET_CLOSE .)
+    WORD            reduce using rule 7 (header -> PAR_RET_OPEN WORD PAR_RET_CLOSE .)
+
+
+state 34
+
+    (8) subtitle -> PAR_RET_OPEN WORD SUBTITLE . PAR_RET_CLOSE
+
+    PAR_RET_CLOSE   shift and go to state 38
+
+
+state 35
+
+    (13) linha -> WORD EQUALS PAR_RET_OPEN lista . PAR_RET_CLOSE
+    (14) lista -> lista . COMMA value
+    (25) value -> lista .
+
+  ! shift/reduce conflict for PAR_RET_CLOSE resolved as shift
+  ! shift/reduce conflict for COMMA resolved as shift
+    PAR_RET_CLOSE   shift and go to state 39
+    COMMA           shift and go to state 37
+
+  ! PAR_RET_CLOSE   [ reduce using rule 25 (value -> lista .) ]
+  ! COMMA           [ reduce using rule 25 (value -> lista .) ]
+
+
+state 36
+
+    (15) lista -> value .
+
+    PAR_RET_CLOSE   reduce using rule 15 (lista -> value .)
+    COMMA           reduce using rule 15 (lista -> value .)
+
+
+state 37
+
+    (14) lista -> lista COMMA . value
+    (16) value -> . basicstring
+    (17) value -> . LITERALSTRING
+    (18) value -> . TIME
+    (19) value -> . DATE
+    (20) value -> . EXPONENCIALNUM
+    (21) value -> . BINNUM
+    (22) value -> . INTNUM
+    (23) value -> . HEXNUM
+    (24) value -> . OCTNUM
+    (25) value -> . lista
+    (11) basicstring -> . BASICSTRING
+    (14) lista -> . lista COMMA value
+    (15) lista -> . value
+
+    LITERALSTRING   shift and go to state 21
+    TIME            shift and go to state 22
+    DATE            shift and go to state 23
+    EXPONENCIALNUM  shift and go to state 24
+    BINNUM          shift and go to state 25
+    INTNUM          shift and go to state 26
+    HEXNUM          shift and go to state 27
+    OCTNUM          shift and go to state 28
+    BASICSTRING     shift and go to state 29
+
+    lista                          shift and go to state 19
+    value                          shift and go to state 40
+    basicstring                    shift and go to state 20
+
+state 38
+
+    (8) subtitle -> PAR_RET_OPEN WORD SUBTITLE PAR_RET_CLOSE .
+
+    WORD            reduce using rule 8 (subtitle -> PAR_RET_OPEN WORD SUBTITLE PAR_RET_CLOSE .)
+
+
+state 39
+
+    (13) linha -> WORD EQUALS PAR_RET_OPEN lista PAR_RET_CLOSE .
+
+    PAR_RET_OPEN    reduce using rule 13 (linha -> WORD EQUALS PAR_RET_OPEN lista PAR_RET_CLOSE .)
+    WORD            reduce using rule 13 (linha -> WORD EQUALS PAR_RET_OPEN lista PAR_RET_CLOSE .)
+    $end            reduce using rule 13 (linha -> WORD EQUALS PAR_RET_OPEN lista PAR_RET_CLOSE .)
+
+
+state 40
+
+    (14) lista -> lista COMMA value .
+    (15) lista -> value .
+
+  ! reduce/reduce conflict for PAR_RET_OPEN resolved using rule 14 (lista -> lista COMMA value .)
+  ! reduce/reduce conflict for WORD resolved using rule 14 (lista -> lista COMMA value .)
+  ! reduce/reduce conflict for $end resolved using rule 14 (lista -> lista COMMA value .)
+  ! reduce/reduce conflict for COMMA resolved using rule 14 (lista -> lista COMMA value .)
+  ! reduce/reduce conflict for PAR_RET_CLOSE resolved using rule 14 (lista -> lista COMMA value .)
+    PAR_RET_OPEN    reduce using rule 14 (lista -> lista COMMA value .)
+    WORD            reduce using rule 14 (lista -> lista COMMA value .)
+    $end            reduce using rule 14 (lista -> lista COMMA value .)
+    COMMA           reduce using rule 14 (lista -> lista COMMA value .)
+    PAR_RET_CLOSE   reduce using rule 14 (lista -> lista COMMA value .)
+
+  ! PAR_RET_OPEN    [ reduce using rule 15 (lista -> value .) ]
+  ! WORD            [ reduce using rule 15 (lista -> value .) ]
+  ! $end            [ reduce using rule 15 (lista -> value .) ]
+  ! COMMA           [ reduce using rule 15 (lista -> value .) ]
+  ! PAR_RET_CLOSE   [ reduce using rule 15 (lista -> value .) ]
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for COMMA in state 19 resolved as shift
+WARNING: shift/reduce conflict for PAR_RET_CLOSE in state 35 resolved as shift
+WARNING: shift/reduce conflict for COMMA in state 35 resolved as shift
+WARNING: reduce/reduce conflict in state 17 resolved using rule (linha -> WORD EQUALS value)
+WARNING: rejected rule (lista -> value) in state 17
+WARNING: reduce/reduce conflict in state 40 resolved using rule (lista -> lista COMMA value)
+WARNING: rejected rule (lista -> value) in state 40

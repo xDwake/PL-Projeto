@@ -1,6 +1,8 @@
 import ply.yacc as yacc
-from lexer import tokens
+from lexer import tokens, tab_in
 import json
+
+
 def p_program(p):
     'program : linha table'
     p[0] = p[1]
@@ -16,13 +18,21 @@ def p_table(p):
         p[0].update(p[2])
     
 def p_categoria(p):
-    'categoria : header conteudo'
-
-    p[0] = { p[1] : p[2] }
+    '''categoria : header conteudo
+                 | header subtitle conteudo
+                 | subtitle conteudo'''
+    if len(p) == 3:
+        p[0] = { p[1] : p[2]}
+    else:
+        p[0] = {p[1] : {p[2] : p[3]}}
 
 def p_header(p):
     '''header : PAR_RET_OPEN WORD PAR_RET_CLOSE'''
     p[0] = p[2]
+    
+def p_subtitle(p):
+    '''subtitle : PAR_RET_OPEN WORD SUBTITLE PAR_RET_CLOSE'''
+    p[0] = p[3].strip('.')
 
 def p_conteudo(p):
     '''conteudo : conteudo linha
@@ -33,46 +43,51 @@ def p_conteudo(p):
         p[0] = p[1]
         p[0].update(p[2])
 
-def p_linha(p):
-    '''linha : WORD EQUALS value '''
-    p[0] = {p[1] : p[3]}
-
 def p_basicstring(p):
-    '''basicstring : BASIC_STRING'''
+    '''basicstring : BASICSTRING'''
     p[0] = p[1].strip("\"")
 
+def p_linha(p):
+    '''linha : WORD EQUALS value
+             | WORD EQUALS PAR_RET_OPEN lista PAR_RET_CLOSE'''
+    if len(p) == 4:
+        p[0] = {p[1] : p[3]}
+    else:
+        p[0] = {p[1] : p[4]}
+
+def p_lista(p):
+    '''lista : lista COMMA value
+             | value'''
+    if len(p) == 4:
+        p[0] = p[1] + [p[3]]
+    else:
+        p[0] = [p[1]]
+
 def p_value(p):
-    '''value : basicstring'''
+    '''value : basicstring
+             | LITERALSTRING
+             | TIME
+             | DATE
+             | EXPONENCIALNUM
+             | BINNUM
+             | INTNUM
+             | HEXNUM
+             | OCTNUM
+             | lista
+             '''
+
     p[0] = p[1]
 
 def p_error(p):
     print("ERRO SINTATICO")
-parser = yacc.yacc()
-tab_in = ''' title = "TOML"
-[owner]
-name = "Tom Preston-Werner"
-dob = "ashfahr"
-dobas = "aufasfha"
-dobassss = "aufasfha"
-[database]
-enabled = "true"
-ports = "coiso"
-data = "delta"
-'''
 
-'''[database]
-[database.coiso]
-enabled = "true"
-ports = "coiso"
-data = "delta"
-temp_targets = "pefomance"
-[database.pescoso]
-coiso = " batata frita"
-[database.corno]
-merda = "paistotudo"
-'''
+
+parser = yacc.yacc()
+
+
 result = parser.parse(tab_in,debug=True)
-print(result)
+print(tab_in)
+
 def convert_to_json(output):
 
     if ".json" not in output:
@@ -85,4 +100,4 @@ def convert_to_json(output):
     
     file.close()
 
-convert_to_json("saida")
+convert_to_json("./saida")

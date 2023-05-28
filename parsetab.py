@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'BASIC_STRING BINNUM COMMA COMMENT DATE DOT EMPTYLINE EQUALS HEXNUM INTNUM LITERAL_STRING OCTNUM PAR_RET_CLOSE PAR_RET_OPEN TIME WORDprogram : linha tabletable : table categoria\n             | categoriacategoria : header conteudoheader : PAR_RET_OPEN WORD PAR_RET_CLOSEconteudo : conteudo linha\n                | linhalinha : WORD EQUALS value basicstring : BASIC_STRINGvalue : basicstring'
+_lr_signature = 'BASICSTRING BINNUM COMMA COMMENT DATE DOT EMPTYLINE EQUALS EXPONENCIALNUM HEXNUM INTNUM LITERALSTRING NEWLINE OCTNUM PAR_RET_CLOSE PAR_RET_OPEN SUBTITLE TIME WORDprogram : linha tabletable : table categoria\n             | categoriacategoria : header conteudo\n                 | header subtitle conteudo\n                 | subtitle conteudoheader : PAR_RET_OPEN WORD PAR_RET_CLOSEsubtitle : PAR_RET_OPEN WORD SUBTITLE PAR_RET_CLOSEconteudo : conteudo linha\n                | linhabasicstring : BASICSTRINGlinha : WORD EQUALS value\n             | WORD EQUALS PAR_RET_OPEN lista PAR_RET_CLOSElista : lista COMMA value\n             | valuevalue : basicstring\n             | LITERALSTRING\n             | TIME\n             | DATE\n             | EXPONENCIALNUM\n             | BINNUM\n             | INTNUM\n             | HEXNUM\n             | OCTNUM\n             | lista\n             '
     
-_lr_action_items = {'WORD':([0,6,7,10,11,13,14,15,16,17,],[3,3,12,3,-7,-8,-10,-9,-6,-5,]),'$end':([1,4,5,9,10,11,13,14,15,16,],[0,-1,-3,-2,-4,-7,-8,-10,-9,-6,]),'PAR_RET_OPEN':([2,4,5,9,10,11,13,14,15,16,],[7,7,-3,-2,-4,-7,-8,-10,-9,-6,]),'EQUALS':([3,],[8,]),'BASIC_STRING':([8,],[15,]),'PAR_RET_CLOSE':([12,],[17,]),}
+_lr_action_items = {'WORD':([0,6,7,8,11,12,13,14,15,17,19,20,21,22,23,24,25,26,27,28,29,30,31,33,38,39,40,],[3,3,3,16,3,3,-10,32,3,-12,-25,-16,-17,-18,-19,-20,-21,-22,-23,-24,-11,-9,3,-7,-8,-13,-14,]),'$end':([1,4,5,10,11,13,15,17,19,20,21,22,23,24,25,26,27,28,29,30,31,39,40,],[0,-1,-3,-2,-4,-10,-6,-12,-25,-16,-17,-18,-19,-20,-21,-22,-23,-24,-11,-9,-5,-13,-14,]),'PAR_RET_OPEN':([2,4,5,6,9,10,11,13,15,17,19,20,21,22,23,24,25,26,27,28,29,30,31,33,39,40,],[8,8,-3,14,18,-2,-4,-10,-6,-12,-25,-16,-17,-18,-19,-20,-21,-22,-23,-24,-11,-9,-5,-7,-13,-14,]),'EQUALS':([3,],[9,]),'LITERALSTRING':([9,18,37,],[21,21,21,]),'TIME':([9,18,37,],[22,22,22,]),'DATE':([9,18,37,],[23,23,23,]),'EXPONENCIALNUM':([9,18,37,],[24,24,24,]),'BINNUM':([9,18,37,],[25,25,25,]),'INTNUM':([9,18,37,],[26,26,26,]),'HEXNUM':([9,18,37,],[27,27,27,]),'OCTNUM':([9,18,37,],[28,28,28,]),'BASICSTRING':([9,18,37,],[29,29,29,]),'PAR_RET_CLOSE':([16,19,20,21,22,23,24,25,26,27,28,29,34,35,36,40,],[33,-25,-16,-17,-18,-19,-20,-21,-22,-23,-24,-11,38,39,-15,-14,]),'SUBTITLE':([16,32,],[34,34,]),'COMMA':([17,19,20,21,22,23,24,25,26,27,28,29,35,36,40,],[-15,37,-16,-17,-18,-19,-20,-21,-22,-23,-24,-11,37,-15,-14,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'program':([0,],[1,]),'linha':([0,6,10,],[2,11,16,]),'table':([2,],[4,]),'categoria':([2,4,],[5,9,]),'header':([2,4,],[6,6,]),'conteudo':([6,],[10,]),'value':([8,],[13,]),'basicstring':([8,],[14,]),}
+_lr_goto_items = {'program':([0,],[1,]),'linha':([0,6,7,11,12,15,31,],[2,13,13,30,13,30,30,]),'table':([2,],[4,]),'categoria':([2,4,],[5,10,]),'header':([2,4,],[6,6,]),'subtitle':([2,4,6,],[7,7,12,]),'conteudo':([6,7,12,],[11,15,31,]),'value':([9,18,37,],[17,36,40,]),'lista':([9,18,37,],[19,35,19,]),'basicstring':([9,18,37,],[20,20,20,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,14 +27,29 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> program","S'",1,None,None,None),
-  ('program -> linha table','program',2,'p_program','yacc.py',5),
-  ('table -> table categoria','table',2,'p_table','yacc.py',10),
-  ('table -> categoria','table',1,'p_table','yacc.py',11),
-  ('categoria -> header conteudo','categoria',2,'p_categoria','yacc.py',19),
-  ('header -> PAR_RET_OPEN WORD PAR_RET_CLOSE','header',3,'p_header','yacc.py',24),
-  ('conteudo -> conteudo linha','conteudo',2,'p_conteudo','yacc.py',28),
-  ('conteudo -> linha','conteudo',1,'p_conteudo','yacc.py',29),
-  ('linha -> WORD EQUALS value','linha',3,'p_linha','yacc.py',37),
-  ('basicstring -> BASIC_STRING','basicstring',1,'p_basicstring','yacc.py',41),
-  ('value -> basicstring','value',1,'p_value','yacc.py',45),
+  ('program -> linha table','program',2,'p_program','yacc.py',7),
+  ('table -> table categoria','table',2,'p_table','yacc.py',12),
+  ('table -> categoria','table',1,'p_table','yacc.py',13),
+  ('categoria -> header conteudo','categoria',2,'p_categoria','yacc.py',21),
+  ('categoria -> header subtitle conteudo','categoria',3,'p_categoria','yacc.py',22),
+  ('categoria -> subtitle conteudo','categoria',2,'p_categoria','yacc.py',23),
+  ('header -> PAR_RET_OPEN WORD PAR_RET_CLOSE','header',3,'p_header','yacc.py',30),
+  ('subtitle -> PAR_RET_OPEN WORD SUBTITLE PAR_RET_CLOSE','subtitle',4,'p_subtitle','yacc.py',34),
+  ('conteudo -> conteudo linha','conteudo',2,'p_conteudo','yacc.py',38),
+  ('conteudo -> linha','conteudo',1,'p_conteudo','yacc.py',39),
+  ('basicstring -> BASICSTRING','basicstring',1,'p_basicstring','yacc.py',47),
+  ('linha -> WORD EQUALS value','linha',3,'p_linha','yacc.py',51),
+  ('linha -> WORD EQUALS PAR_RET_OPEN lista PAR_RET_CLOSE','linha',5,'p_linha','yacc.py',52),
+  ('lista -> lista COMMA value','lista',3,'p_lista','yacc.py',59),
+  ('lista -> value','lista',1,'p_lista','yacc.py',60),
+  ('value -> basicstring','value',1,'p_value','yacc.py',67),
+  ('value -> LITERALSTRING','value',1,'p_value','yacc.py',68),
+  ('value -> TIME','value',1,'p_value','yacc.py',69),
+  ('value -> DATE','value',1,'p_value','yacc.py',70),
+  ('value -> EXPONENCIALNUM','value',1,'p_value','yacc.py',71),
+  ('value -> BINNUM','value',1,'p_value','yacc.py',72),
+  ('value -> INTNUM','value',1,'p_value','yacc.py',73),
+  ('value -> HEXNUM','value',1,'p_value','yacc.py',74),
+  ('value -> OCTNUM','value',1,'p_value','yacc.py',75),
+  ('value -> lista','value',1,'p_value','yacc.py',76),
 ]
